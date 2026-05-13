@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const links = [
   { href: "#how", label: "How it works" },
@@ -29,18 +30,12 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-5 md:px-8 h-16 md:h-20 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-2 group">
-          <div className="w-9 h-9 rounded-full bg-forest flex items-center justify-center text-cream font-serif text-lg leading-none">
-            M
-          </div>
-          <div className="leading-tight">
-            <div className="font-serif text-lg md:text-xl text-forest-deep tracking-tight">
-              Meri Sehat
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground -mt-0.5">
-              GLP-1 Care
-            </div>
-          </div>
+        <a href="#top" className="flex items-center group">
+          <img
+            src={logo}
+            alt="Meri Sehat"
+            className="h-9 md:h-10 w-auto object-contain"
+          />
         </a>
 
         <nav className="hidden md:flex items-center gap-8">
