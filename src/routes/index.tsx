@@ -26,6 +26,7 @@ import {
 import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
 import heroWoman from "@/assets/hero-woman.jpg";
+import logo from "@/assets/logo.png";
 import painWoman from "@/assets/pain-woman.jpg";
 import doctor1 from "@/assets/doctor-1.jpg";
 import doctor2 from "@/assets/doctor-2.jpg";
