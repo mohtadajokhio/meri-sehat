@@ -26,7 +26,7 @@ import {
 import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
 import heroWoman from "@/assets/hero-woman.jpg";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.svg";
 import painWoman from "@/assets/pain-woman.jpg";
 import doctor1 from "@/assets/doctor-1.jpg";
 import doctor2 from "@/assets/doctor-2.jpg";
@@ -420,7 +420,7 @@ function Products() {
                     src={c.img}
                     alt={`${c.name} ${c.sub}`}
                     loading="lazy"
-                    className="absolute inset-0 w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
+                    className="absolute bottom-0 right-0 w-[78%] h-[88%] object-contain object-bottom-right transition-transform duration-700 group-hover:scale-105 origin-bottom-right"
                   />
                   <span className="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-forest text-cream text-[10px] font-medium tracking-wider">
                     Rx
