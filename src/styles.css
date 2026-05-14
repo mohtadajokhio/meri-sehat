@@ -4,18 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@layer base {
-  /* Satoshi (brand) via Fontshare */
-  @font-face {
-    font-family: "Satoshi";
-    font-style: normal;
-    font-weight: 300 900;
-    font-display: swap;
-    src: url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
-  }
-}
-
-/* Use the proper Fontshare CSS import for Satoshi */
+/* Satoshi (brand font) via Fontshare */
 @import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
 
 @theme inline {
