@@ -26,15 +26,19 @@ import {
 import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
 import heroWoman from "@/assets/hero-woman.jpg";
+import logo from "@/assets/logo.png";
 import painWoman from "@/assets/pain-woman.jpg";
 import doctor1 from "@/assets/doctor-1.jpg";
 import doctor2 from "@/assets/doctor-2.jpg";
 import life1 from "@/assets/life-1.jpg";
 import life2 from "@/assets/life-2.jpg";
 import life3 from "@/assets/life-3.jpg";
-import prodPen from "@/assets/prod-pen.jpg";
-import prodOral from "@/assets/prod-oral.jpg";
-import prodTirzee from "@/assets/prod-tirzee.jpg";
+import prodPen from "@/assets/prod-pen.png";
+import prodOral from "@/assets/prod-oral.png";
+import prodTirzee from "@/assets/prod-tirzee.png";
+import bgPen from "@/assets/bg-pen.png";
+import bgOral from "@/assets/bg-oral.png";
+import bgTirzee from "@/assets/bg-tirzee.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -363,7 +367,7 @@ function Products() {
       copy: "A once-weekly injectable semaglutide — the same active ingredient as Ozempic® and Wegovy®. Clinically proven for significant weight loss.",
       bullets: ["Once weekly", "Doctor prescribed", "Home delivered"],
       img: prodPen,
-      tone: "from-cream to-secondary",
+      bg: bgPen,
     },
     {
       name: "SEM-O",
@@ -372,7 +376,7 @@ function Products() {
       copy: "Oral semaglutide delivers GLP-1 benefits without injections — ideal for patients who prefer a non-injectable option.",
       bullets: ["Daily tablet", "Doctor prescribed", "No needles"],
       img: prodOral,
-      tone: "from-secondary to-cream",
+      bg: bgOral,
     },
     {
       name: "TIRZEE",
@@ -381,7 +385,7 @@ function Products() {
       copy: "The next generation of GLP-1 therapy — tirzepatide targets both GLP-1 and GIP receptors for superior outcomes. Same molecule as Mounjaro®.",
       bullets: ["Once weekly", "Doctor prescribed", "Advanced formula"],
       img: prodTirzee,
-      tone: "from-sage/20 to-cream",
+      bg: bgTirzee,
     },
   ];
   return (
@@ -408,14 +412,15 @@ function Products() {
           {cards.map((c, i) => (
             <Reveal key={c.name} delay={i * 0.1}>
               <article className="group relative h-full flex flex-col rounded-3xl bg-card border border-border overflow-hidden hover:border-forest/40 hover:-translate-y-1 transition-all duration-500 hover:shadow-card">
-                <div className={`relative aspect-[5/4] bg-gradient-to-br ${c.tone} overflow-hidden`}>
+                <div
+                  className="relative aspect-[5/4] overflow-hidden bg-cover bg-center"
+                  style={{ backgroundImage: `url(${c.bg})` }}
+                >
                   <img
                     src={c.img}
                     alt={`${c.name} ${c.sub}`}
                     loading="lazy"
-                    width={1024}
-                    height={1024}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="absolute inset-0 w-full h-full object-contain p-6 transition-transform duration-700 group-hover:scale-105"
                   />
                   <span className="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-forest text-cream text-[10px] font-medium tracking-wider">
                     Rx
@@ -933,12 +938,7 @@ function Footer() {
     <footer className="bg-cream border-t border-border">
       <div className="mx-auto max-w-7xl px-5 md:px-8 py-16 md:py-20 grid md:grid-cols-12 gap-10">
         <div className="md:col-span-4">
-          <div className="flex items-center gap-2">
-            <div className="w-9 h-9 rounded-full bg-forest flex items-center justify-center text-cream font-serif text-lg leading-none">
-              M
-            </div>
-            <span className="font-serif text-xl text-forest-deep">Meri Sehat</span>
-          </div>
+          <img src={logo} alt="Meri Sehat" className="h-10 w-auto object-contain" />
           <p className="mt-4 text-sm text-foreground/70 max-w-xs">
             Healthcare, delivered. Doctor-prescribed GLP-1 weight management for Pakistan.
           </p>
