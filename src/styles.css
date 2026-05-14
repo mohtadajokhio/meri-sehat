@@ -1,11 +1,9 @@
+@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
-/* Satoshi (brand font) via Fontshare */
-@import url("https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&display=swap");
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
