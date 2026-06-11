@@ -1,12 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import {
   ArrowRight,
-  ArrowUpRight,
   Check,
   ChevronDown,
-  ClipboardList,
   Video,
   FileText,
   Package,
@@ -22,6 +20,7 @@ import {
   Star,
   Plus,
   Minus,
+  ShoppingBag,
 } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
@@ -33,32 +32,48 @@ import doctor2 from "@/assets/doctor-2.jpg";
 import life1 from "@/assets/life-1.jpg";
 import life2 from "@/assets/life-2.jpg";
 import life3 from "@/assets/life-3.jpg";
-import prodPen from "@/assets/prod-pen.png";
-import prodOral from "@/assets/prod-oral.png";
 import prodTirzee from "@/assets/prod-tirzee.png";
-import bgPen from "@/assets/bg-pen.png";
-import bgOral from "@/assets/bg-oral.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
+import { addToCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Meri Sehat — GLP-1 Weight Management, Prescribed in Pakistan" },
+      { title: "Meri Sehat — Tirzee (Tirzepatide) Weight Management in Pakistan" },
       {
         name: "description",
         content:
-          "Sem-P, Sem-O and Tirzee — GLP-1 medications prescribed by licensed Pakistani doctors and delivered to your door. Free consultation in 3 minutes.",
+          "Tirzee (tirzepatide) — next-generation GLP-1 weight management prescribed by licensed Pakistani doctors and delivered to your door.",
       },
-      { property: "og:title", content: "Meri Sehat — GLP-1 Weight Management" },
+      { property: "og:title", content: "Meri Sehat — Tirzee Weight Management" },
       {
         property: "og:description",
         content:
-          "Doctor-prescribed GLP-1 weight loss, delivered to your door across Pakistan.",
+          "Doctor-prescribed Tirzee (tirzepatide), delivered to your door across Pakistan.",
       },
     ],
   }),
   component: Landing,
 });
+
+function ConsultLink({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={CONSULT_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className}
+    >
+      {children}
+    </a>
+  );
+}
 
 /* ---------- HERO ---------- */
 function Hero() {
@@ -69,7 +84,6 @@ function Hero() {
 
   return (
     <section ref={ref} id="top" className="relative pt-28 md:pt-32 pb-20 md:pb-28 overflow-hidden">
-      {/* ambient backdrop */}
       <div aria-hidden className="absolute inset-0 bg-grain pointer-events-none" />
       <div aria-hidden className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full bg-gold/15 blur-3xl" />
       <div aria-hidden className="absolute -bottom-40 -left-40 w-[520px] h-[520px] rounded-full bg-sage/20 blur-3xl" />
@@ -104,8 +118,9 @@ function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mt-6 max-w-xl text-lg text-foreground/75 text-pretty"
           >
-            GLP-1 weight loss — prescribed by a licensed doctor, delivered to your door.
-            Real results. Real medical support. All from home.
+            Tirzee — next-generation GLP-1 weight loss, prescribed by a licensed
+            doctor and delivered to your door. Real results. Real medical support.
+            All from home.
           </motion.p>
 
           <motion.div
@@ -114,13 +129,10 @@ function Hero() {
             transition={{ duration: 0.8, delay: 0.35 }}
             className="mt-9 flex flex-col sm:flex-row gap-3 sm:items-center"
           >
-            <a
-              href="#consult"
-              className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-4 text-base font-medium hover:bg-forest-deep transition-all shadow-soft hover:shadow-card hover:-translate-y-0.5"
-            >
+            <ConsultLink className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-4 text-base font-medium hover:bg-forest-deep transition-all shadow-soft hover:shadow-card hover:-translate-y-0.5">
               Consult Now — It's Free
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-            </a>
+            </ConsultLink>
             <a
               href="#how"
               className="inline-flex items-center justify-center gap-2 px-5 py-4 text-sm text-forest-deep hover:text-forest transition-colors"
@@ -136,10 +148,9 @@ function Hero() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="mt-3 text-xs text-muted-foreground"
           >
-            Book your doctor consultation in under 3 minutes.
+            Already have a prescription? Order Tirzee directly.
           </motion.p>
 
-          {/* trust bar */}
           <Reveal delay={0.4} className="mt-10 md:mt-14">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-x-6 gap-y-4">
               {[
@@ -157,7 +168,6 @@ function Hero() {
           </Reveal>
         </div>
 
-        {/* hero image */}
         <div className="lg:col-span-5">
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
@@ -177,7 +187,6 @@ function Hero() {
               <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-forest-deep/30 via-transparent to-transparent" />
             </div>
 
-            {/* floating cards */}
             <motion.div
               initial={{ opacity: 0, y: 20, x: -10 }}
               animate={{ opacity: 1, y: 0, x: 0 }}
@@ -274,15 +283,12 @@ function Pain() {
                 If any of these sound like you — you're not failing. Your biology is.
               </p>
               <p className="mt-3 text-cream/80 text-sm">
-                GLP-1 medications were developed to address the exact hormonal imbalances behind
+                Tirzee was developed to address the exact hormonal imbalances behind
                 weight gain.
               </p>
-              <a
-                href="#consult"
-                className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-gold hover:text-cream transition-colors"
-              >
+              <ConsultLink className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-gold hover:text-cream transition-colors">
                 Find out if you're eligible <ArrowRight size={16} />
-              </a>
+              </ConsultLink>
             </div>
           </Reveal>
         </div>
@@ -294,21 +300,9 @@ function Pain() {
 /* ---------- SCIENCE ---------- */
 function Science() {
   const cols = [
-    {
-      Icon: Brain,
-      t: "Reduces Hunger Signals",
-      d: "GLP-1 tells your brain you're full — faster, longer.",
-    },
-    {
-      Icon: Soup,
-      t: "Slows Digestion",
-      d: "Food moves slowly, reducing cravings between meals.",
-    },
-    {
-      Icon: Droplets,
-      t: "Balances Blood Sugar",
-      d: "Stabilizes energy and reduces fat storage triggers.",
-    },
+    { Icon: Brain, t: "Reduces Hunger Signals", d: "Tirzee tells your brain you're full — faster, longer." },
+    { Icon: Soup, t: "Slows Digestion", d: "Food moves slowly, reducing cravings between meals." },
+    { Icon: Droplets, t: "Balances Blood Sugar", d: "Stabilizes energy and reduces fat storage triggers." },
   ];
   return (
     <section className="relative py-24 md:py-32">
@@ -318,12 +312,12 @@ function Science() {
             The science behind your results
           </p>
           <h2 className="mt-4 text-center font-serif text-4xl md:text-6xl text-forest-deep text-balance leading-[1.05]">
-            GLP-1: the hormone <span className="italic">your body</span> was missing.
+            GLP-1 + GIP: the hormones <span className="italic">your body</span> was missing.
           </h2>
           <p className="mt-5 max-w-2xl mx-auto text-center text-foreground/70">
-            GLP-1 (Glucagon-Like Peptide-1) is a natural hormone that controls hunger, slows
-            digestion, and regulates blood sugar. GLP-1 medications work with your biology —
-            not against it.
+            Tirzee (tirzepatide) is a dual-action medication that targets both GLP-1 and GIP
+            receptors — controlling hunger, slowing digestion, and regulating blood sugar.
+            It works with your biology, not against it.
           </p>
         </Reveal>
 
@@ -344,7 +338,7 @@ function Science() {
         <Reveal delay={0.2}>
           <figure className="mt-20 max-w-4xl mx-auto text-center">
             <blockquote className="font-serif text-3xl md:text-4xl text-forest-deep leading-[1.15] text-balance">
-              "GLP-1 medications are the most clinically significant breakthrough in obesity
+              "Tirzepatide is the most clinically significant breakthrough in obesity
               treatment in 30 years."
             </blockquote>
             <figcaption className="mt-6 text-sm text-muted-foreground">
@@ -357,37 +351,28 @@ function Science() {
   );
 }
 
-/* ---------- PRODUCTS ---------- */
-function Products() {
-  const cards = [
-    {
-      name: "SEM-P",
-      sub: "Semaglutide Pen",
-      best: "Starting your GLP-1 journey",
-      copy: "A once-weekly injectable semaglutide — the same active ingredient as Ozempic® and Wegovy®. Clinically proven for significant weight loss.",
-      bullets: ["Once weekly", "Doctor prescribed", "Home delivered"],
-      img: prodPen,
-      bg: bgPen,
-    },
-    {
-      name: "SEM-O",
-      sub: "Semaglutide Oral",
-      best: "Patients who prefer pill-based treatment",
-      copy: "Oral semaglutide delivers GLP-1 benefits without injections — ideal for patients who prefer a non-injectable option.",
-      bullets: ["Daily tablet", "Doctor prescribed", "No needles"],
-      img: prodOral,
-      bg: bgOral,
-    },
-    {
-      name: "TIRZEE",
-      sub: "Tirzepatide",
-      best: "Maximum results, dual-action",
-      copy: "The next generation of GLP-1 therapy — tirzepatide targets both GLP-1 and GIP receptors for superior outcomes. Same molecule as Mounjaro®.",
-      bullets: ["Once weekly", "Doctor prescribed", "Advanced formula"],
-      img: prodTirzee,
-      bg: bgTirzee,
-    },
+/* ---------- PRODUCT (TIRZEE) ---------- */
+function ProductSection() {
+  const [added, setAdded] = useState(false);
+  const handleAdd = () => {
+    addToCart({
+      id: TIRZEE_PRODUCT.id,
+      name: TIRZEE_PRODUCT.name,
+      variant: TIRZEE_PRODUCT.variant,
+      price: TIRZEE_PRODUCT.price,
+      image: prodTirzee,
+    });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1800);
+  };
+
+  const bullets = [
+    "Once-weekly injection",
+    "Dual-action: GLP-1 + GIP receptors",
+    "Same molecule as Mounjaro®",
+    "Doctor-prescribed · home delivered",
   ];
+
   return (
     <section id="products" className="relative py-24 md:py-32 bg-secondary/40">
       <div className="mx-auto max-w-7xl px-5 md:px-8">
@@ -395,85 +380,95 @@ function Products() {
           <div className="flex items-end justify-between flex-wrap gap-6">
             <div className="max-w-2xl">
               <p className="text-xs uppercase tracking-[0.22em] text-forest/70">
-                Our medication toolkit
+                Our medication
               </p>
               <h2 className="mt-3 font-serif text-4xl md:text-5xl text-forest-deep text-balance leading-[1.05]">
-                Three clinically proven options. <span className="italic">One right for you.</span>
+                Tirzee. <span className="italic">The next generation of GLP-1.</span>
               </h2>
             </div>
             <p className="text-foreground/70 max-w-sm">
-              Your doctor prescribes the medication that matches your medical history, BMI, and
-              health goals. No guesswork.
+              Tirzee requires a valid prescription. Already have one? Order directly.
+              If not, consult one of our doctors first.
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid md:grid-cols-3 gap-6">
-          {cards.map((c, i) => (
-            <Reveal key={c.name} delay={i * 0.1}>
-              <article className="group relative h-full flex flex-col rounded-3xl bg-card border border-border overflow-hidden hover:border-forest/40 hover:-translate-y-1 transition-all duration-500 hover:shadow-card">
-                <div
-                  className="relative aspect-[5/4] overflow-hidden bg-cover bg-center"
-                  style={{ backgroundImage: `url(${c.bg})` }}
-                >
-                  <img
-                    src={c.img}
-                    alt={`${c.name} ${c.sub}`}
-                    loading="lazy"
-                    className="absolute bottom-0 right-0 w-[78%] h-[88%] object-contain object-bottom-right transition-transform duration-700 group-hover:scale-105 origin-bottom-right"
-                  />
-                  <span className="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-forest text-cream text-[10px] font-medium tracking-wider">
-                    Rx
-                  </span>
-                </div>
-                <div className="p-7 flex flex-col flex-1">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-serif text-3xl text-forest-deep">{c.name}</h3>
-                    <span className="text-xs uppercase tracking-wider text-muted-foreground">
-                      {c.sub}
-                    </span>
-                  </div>
-                  <p className="mt-2 text-xs uppercase tracking-[0.16em] text-gold">
-                    Best for · {c.best}
-                  </p>
-                  <p className="mt-4 text-foreground/75 text-[15px] leading-relaxed">{c.copy}</p>
-                  <ul className="mt-5 space-y-2">
-                    {c.bullets.map((b) => (
-                      <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
-                        <Check size={14} className="text-forest" /> {b}
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href="#consult"
-                    className="mt-7 inline-flex items-center gap-1.5 text-sm font-medium text-forest-deep group/link"
-                  >
-                    Learn more
-                    <ArrowUpRight
-                      size={16}
-                      className="transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-                    />
-                  </a>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+        <div className="mt-14 grid lg:grid-cols-2 gap-8 items-stretch">
+          <Reveal>
+            <article className="group relative h-full rounded-3xl bg-card border border-border overflow-hidden hover:border-forest/40 transition-all duration-500 hover:shadow-card">
+              <div
+                className="relative aspect-[5/4] overflow-hidden bg-cover bg-center"
+                style={{ backgroundImage: `url(${bgTirzee})` }}
+              >
+                <img
+                  src={prodTirzee}
+                  alt="Tirzee tirzepatide pen"
+                  loading="lazy"
+                  className="absolute bottom-0 right-0 w-[78%] h-[88%] object-contain object-bottom-right transition-transform duration-700 group-hover:scale-105 origin-bottom-right"
+                />
+                <span className="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-forest text-cream text-[10px] font-medium tracking-wider">
+                  Rx
+                </span>
+              </div>
+            </article>
+          </Reveal>
 
-        <Reveal delay={0.2}>
-          <p className="mt-10 text-center text-foreground/70 max-w-2xl mx-auto text-sm">
-            Not sure which one is right for you? That's what the consultation is for. Our doctors
-            review your full medical history before recommending any medication.
-          </p>
-          <div className="mt-6 flex justify-center">
-            <a
-              href="#consult"
-              className="inline-flex items-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-colors"
-            >
-              Start free consultation <ArrowRight size={16} />
-            </a>
-          </div>
-        </Reveal>
+          <Reveal delay={0.1}>
+            <div className="h-full flex flex-col p-2 md:p-4">
+              <div className="flex items-baseline justify-between gap-3">
+                <h3 className="font-serif text-4xl text-forest-deep">Tirzee</h3>
+                <span className="text-xs uppercase tracking-wider text-muted-foreground">
+                  Tirzepatide
+                </span>
+              </div>
+              <p className="mt-2 text-xs uppercase tracking-[0.16em] text-gold">
+                Best for · Maximum results, dual-action
+              </p>
+              <p className="mt-4 text-foreground/75 text-[15px] leading-relaxed max-w-xl">
+                Tirzepatide targets both GLP-1 and GIP receptors for superior outcomes
+                versus single-action GLP-1 therapies. Once-weekly, doctor-prescribed,
+                and delivered discreetly to your door.
+              </p>
+              <ul className="mt-5 space-y-2">
+                {bullets.map((b) => (
+                  <li key={b} className="flex items-center gap-2 text-sm text-foreground/80">
+                    <Check size={14} className="text-forest" /> {b}
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-7 flex items-baseline gap-3">
+                <span className="font-serif text-3xl text-forest-deep">
+                  PKR {TIRZEE_PRODUCT.price.toLocaleString()}
+                </span>
+                <span className="text-sm text-muted-foreground">per pen</span>
+              </div>
+
+              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+                <button
+                  onClick={handleAdd}
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
+                >
+                  <ShoppingBag size={16} />
+                  {added ? "Added to cart" : "Add to cart"}
+                </button>
+                <Link
+                  to="/product/tirzee"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium text-forest-deep hover:border-forest/40 transition-colors"
+                >
+                  View product
+                </Link>
+              </div>
+
+              <div className="mt-5 p-4 rounded-2xl bg-gold/10 border border-gold/30 text-sm text-forest-deep">
+                Don't have a prescription?{" "}
+                <ConsultLink className="font-medium underline underline-offset-4 hover:text-forest">
+                  Consult a doctor now →
+                </ConsultLink>
+              </div>
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -483,26 +478,20 @@ function Products() {
 function HowItWorks() {
   const steps = [
     {
-      Icon: ClipboardList,
-      n: "01",
-      t: "Fill a quick health form",
-      d: "Answer questions about your weight, history, and goals. 3 minutes. 100% confidential.",
-    },
-    {
       Icon: Video,
-      n: "02",
+      n: "01",
       t: "Meet your doctor online",
-      d: "A licensed Pakistani doctor reviews your form and meets you via secure video call — same day in most cases.",
+      d: "Book a consultation with a licensed Pakistani doctor via secure video — same day in most cases.",
     },
     {
       Icon: FileText,
-      n: "03",
+      n: "02",
       t: "Receive your prescription",
-      d: "If eligible, your doctor prescribes the right GLP-1 medication and routes it to our partner pharmacy.",
+      d: "If eligible, your doctor prescribes Tirzee and you can upload the prescription at checkout.",
     },
     {
       Icon: Package,
-      n: "04",
+      n: "03",
       t: "Delivered to your home",
       d: "Discreet packaging within 2–5 business days. Ongoing doctor support included.",
     },
@@ -521,12 +510,11 @@ function HowItWorks() {
         </Reveal>
 
         <div className="mt-16 relative">
-          {/* connector */}
           <div
             aria-hidden
-            className="hidden md:block absolute top-12 left-[7%] right-[7%] h-px bg-gradient-to-r from-transparent via-forest/25 to-transparent"
+            className="hidden md:block absolute top-12 left-[10%] right-[10%] h-px bg-gradient-to-r from-transparent via-forest/25 to-transparent"
           />
-          <div className="grid md:grid-cols-4 gap-10 md:gap-6">
+          <div className="grid md:grid-cols-3 gap-10 md:gap-8">
             {steps.map(({ Icon, n, t, d }, i) => (
               <Reveal key={n} delay={i * 0.1}>
                 <div className="relative">
@@ -547,14 +535,11 @@ function HowItWorks() {
         <Reveal delay={0.2}>
           <div className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-5 p-6 md:p-7 rounded-2xl border border-gold/40 bg-gold/10">
             <p className="font-serif text-xl md:text-2xl text-forest-deep text-balance">
-              ⚡ Most patients complete steps 1–3 in under 24 hours.
+              ⚡ Most patients complete consultation and prescription in under 24 hours.
             </p>
-            <a
-              href="#consult"
-              className="inline-flex items-center gap-2 rounded-full bg-forest text-cream px-6 py-3 text-sm font-medium whitespace-nowrap hover:bg-forest-deep transition-colors"
-            >
-              Begin step 1 — it's free <ArrowRight size={16} />
-            </a>
+            <ConsultLink className="inline-flex items-center gap-2 rounded-full bg-forest text-cream px-6 py-3 text-sm font-medium whitespace-nowrap hover:bg-forest-deep transition-colors">
+              Consult Now <ArrowRight size={16} />
+            </ConsultLink>
           </div>
         </Reveal>
       </div>
@@ -565,23 +550,23 @@ function HowItWorks() {
 /* ---------- RESULTS ---------- */
 function Results() {
   const stats = [
-    { n: "19%", l: "avg. body weight reduction in clinical trials" },
+    { n: "21%", l: "avg. body weight reduction in clinical trials" },
     { n: "6\"", l: "avg. waist reduction in 12 weeks" },
-    { n: "86%", l: "of members report improved energy" },
-    { n: "89%", l: "would recommend GLP-1 to a friend" },
+    { n: "86%", l: "of patients report improved energy" },
+    { n: "89%", l: "would recommend Tirzee to a friend" },
   ];
   const tests = [
     {
-      q: "I had been 'trying to lose weight' for 11 years. After 3 months on Sem-P, I've lost more than I ever did in a year of dieting. But what surprised me most was the energy — I feel like myself again.",
+      q: "I had been 'trying to lose weight' for 11 years. After 3 months on Tirzee, I've lost more than I ever did in a year of dieting. But what surprised me most was the energy — I feel like myself again.",
       n: "Ayesha R.",
       c: "Lahore",
-      m: "Lost 14 kg in 14 weeks · Sem-P",
+      m: "Lost 14 kg in 14 weeks · Tirzee",
     },
     {
-      q: "I was terrified of injections. My doctor started me on Sem-O tablets, and the process was completely manageable. The consultation was easy, professional, and private.",
+      q: "The doctor was kind, professional, and made everything feel safe. Tirzee changed the way my body responds to food — for the first time in years I'm not constantly thinking about my next meal.",
       n: "Imran K.",
       c: "Karachi",
-      m: "Lost 9 kg in 10 weeks · Sem-O",
+      m: "Lost 9 kg in 10 weeks · Tirzee",
     },
     {
       q: "I avoided weddings for years. Three months in and I'm the one taking the photos again. The doctor check-ins made me feel safe the whole way through.",
@@ -655,14 +640,14 @@ function Doctors() {
       n: "Dr. Aisha Qureshi",
       cred: "MBBS, FCPS (Internal Medicine)",
       spec: "Metabolic health & obesity medicine",
-      q: "I see patients every day who've been told to 'just eat less.' GLP-1 therapy lets me give them a real medical solution — not a lecture.",
+      q: "I see patients every day who've been told to 'just eat less.' Tirzee lets me give them a real medical solution — not a lecture.",
     },
     {
       img: doctor2,
       n: "Dr. Faisal Ahmed",
       cred: "MBBS, MRCP (UK)",
       spec: "Endocrinology & diabetes care",
-      q: "These medications give us a tool that actually addresses biology. Combined with proper monitoring, the outcomes for our patients have been remarkable.",
+      q: "Tirzepatide gives us a tool that actually addresses biology. Combined with proper monitoring, the outcomes for our patients have been remarkable.",
     },
   ];
   return (
@@ -725,24 +710,28 @@ function Doctors() {
 function Faq() {
   const items = [
     {
-      q: "Are these medications safe?",
-      a: "Yes. Semaglutide and tirzepatide are FDA-approved and have been used in controlled clinical trials involving hundreds of thousands of patients. Our doctors assess your medical eligibility before prescribing — people with certain conditions are not eligible, which is exactly why a consultation is required.",
+      q: "Is Tirzee safe?",
+      a: "Yes. Tirzepatide is FDA-approved and has been used in controlled clinical trials involving hundreds of thousands of patients. Our doctors assess your medical eligibility before prescribing — people with certain conditions are not eligible, which is exactly why a consultation is required.",
     },
     {
       q: "Is this legal in Pakistan?",
       a: "Absolutely. Meri Sehat operates as a licensed telehealth platform under Pakistan's healthcare regulations. Our prescribing doctors are registered with the Pakistan Medical Commission and prescriptions are dispensed by licensed partner pharmacies.",
     },
     {
+      q: "Do I need a prescription to order Tirzee?",
+      a: "Yes. Tirzee is a prescription medication. If you already have a valid prescription, you can upload it at checkout. If not, book a free consultation with one of our doctors first.",
+    },
+    {
       q: "Do I have to inject myself?",
-      a: "Not necessarily. Sem-O is a daily oral tablet — no injections required. For patients who are comfortable with self-injection, Sem-P and Tirzee offer once-weekly injectable options. Your doctor will help you decide.",
+      a: "Tirzee is a once-weekly self-injection using a pre-filled pen. Your doctor will walk you through exactly how to use it, and our support team is available throughout your treatment.",
     },
     {
       q: "How much does it cost?",
-      a: "Consultation is free. Medication pricing varies by product and is discussed during your consultation. We offer multiple options at different price points to accommodate different budgets.",
+      a: "Consultation is free. Tirzee is priced per pen and is shown on the product page. We offer ongoing doctor support included with your order.",
     },
     {
       q: "What if it doesn't work for me?",
-      a: "GLP-1 medications have strong clinical evidence behind them, but individual results vary. Our doctors monitor your progress and can adjust dosage or medication as needed. You are never alone in this process.",
+      a: "Tirzee has strong clinical evidence behind it, but individual results vary. Our doctors monitor your progress and can adjust dosage as needed. You are never alone in this process.",
     },
     {
       q: "Will I gain the weight back when I stop?",
@@ -796,9 +785,9 @@ function Faq() {
         <Reveal delay={0.1}>
           <p className="mt-10 text-center text-sm text-muted-foreground">
             Still have questions?{" "}
-            <a href="#consult" className="text-forest-deep underline underline-offset-4 hover:text-forest">
+            <ConsultLink className="text-forest-deep underline underline-offset-4 hover:text-forest">
               Chat with our team
-            </a>
+            </ConsultLink>
           </p>
         </Reveal>
       </div>
@@ -877,49 +866,53 @@ function Vision() {
 /* ---------- FINAL CTA ---------- */
 function FinalCta() {
   return (
-    <section id="consult" className="relative py-24 md:py-36 bg-forest-radial text-cream overflow-hidden">
+    <section className="relative py-24 md:py-36 bg-forest-radial text-cream overflow-hidden">
       <div aria-hidden className="absolute inset-0 bg-grain opacity-30" />
       <div className="relative mx-auto max-w-4xl px-5 md:px-8 text-center">
         <Reveal>
           <p className="text-xs uppercase tracking-[0.22em] text-gold">Begin today</p>
           <h2 className="mt-3 font-serif text-5xl md:text-7xl text-balance leading-[1.02]">
-            Your first step takes <span className="italic">3 minutes.</span>
+            Two paths. <span className="italic">One you.</span>
           </h2>
           <p className="mt-6 max-w-xl mx-auto text-cream/80 text-pretty">
-            Fill in your health details. Meet a doctor online. Get your prescription if eligible.
-            It's that simple. And it starts right now.
+            Already have a Tirzee prescription? Order it now and we'll deliver it to your door.
+            New to Tirzee? Speak to a licensed doctor — it's free.
           </p>
         </Reveal>
 
         <Reveal delay={0.15}>
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 text-sm text-cream/80">
-            <span className="inline-flex items-center gap-2"><ClipboardList size={16} className="text-gold" /> Fill health form (3 min)</span>
-            <span className="hidden sm:block text-gold">→</span>
             <span className="inline-flex items-center gap-2"><Video size={16} className="text-gold" /> Doctor consultation</span>
+            <span className="hidden sm:block text-gold">→</span>
+            <span className="inline-flex items-center gap-2"><FileText size={16} className="text-gold" /> Upload prescription</span>
             <span className="hidden sm:block text-gold">→</span>
             <span className="inline-flex items-center gap-2"><Package size={16} className="text-gold" /> Medication delivered</span>
           </div>
         </Reveal>
 
         <Reveal delay={0.25}>
-          <div className="mt-12">
-            <a
-              href="#consult"
-              className="group inline-flex items-center gap-3 rounded-full bg-gold text-forest-deep px-9 py-5 text-base font-medium hover:bg-cream transition-all hover:-translate-y-0.5 shadow-card"
-            >
+          <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <ConsultLink className="group inline-flex items-center gap-3 rounded-full bg-gold text-forest-deep px-9 py-5 text-base font-medium hover:bg-cream transition-all hover:-translate-y-0.5 shadow-card">
               Consult Now — It's Free
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
-            </a>
-            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-cream/70">
-              <span className="inline-flex items-center gap-1.5"><Lock size={12} /> 100% private</span>
-              <span className="inline-flex items-center gap-1.5"><Stethoscope size={12} /> Licensed PK Doctors</span>
-              <span className="inline-flex items-center gap-1.5"><Truck size={12} /> Home delivery</span>
-            </div>
-            <p className="mt-6 text-xs text-cream/60">
-              <span className="inline-block w-2 h-2 rounded-full bg-gold mr-1.5 align-middle animate-pulse" />
-              Doctors available today — consultations filling up fast.
-            </p>
+            </ConsultLink>
+            <Link
+              to="/product/tirzee"
+              className="inline-flex items-center gap-3 rounded-full border border-cream/30 text-cream px-9 py-5 text-base font-medium hover:bg-cream/10 transition-all"
+            >
+              Order Tirzee
+              <ShoppingBag size={18} />
+            </Link>
           </div>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-cream/70">
+            <span className="inline-flex items-center gap-1.5"><Lock size={12} /> 100% private</span>
+            <span className="inline-flex items-center gap-1.5"><Stethoscope size={12} /> Licensed PK Doctors</span>
+            <span className="inline-flex items-center gap-1.5"><Truck size={12} /> Home delivery</span>
+          </div>
+          <p className="mt-6 text-xs text-cream/60">
+            <span className="inline-block w-2 h-2 rounded-full bg-gold mr-1.5 align-middle animate-pulse" />
+            Doctors available today — consultations filling up fast.
+          </p>
         </Reveal>
       </div>
     </section>
@@ -929,7 +922,7 @@ function FinalCta() {
 /* ---------- FOOTER ---------- */
 function Footer() {
   const cols = [
-    { h: "Products", l: ["Sem-P", "Sem-O", "Tirzee", "How pricing works", "Comparison guide"] },
+    { h: "Product", l: ["Tirzee", "How pricing works", "Prescription guide"] },
     { h: "Company", l: ["About Meri Sehat", "Our doctors", "Pharmacy partners", "Press / Media"] },
     { h: "Support", l: ["FAQs", "WhatsApp support", "Contact us", "Refund policy"] },
     { h: "Legal", l: ["Privacy policy", "Terms of service", "Medical disclaimer"] },
@@ -940,7 +933,7 @@ function Footer() {
         <div className="md:col-span-4">
           <img src={logo} alt="Meri Sehat" className="h-10 w-auto object-contain" />
           <p className="mt-4 text-sm text-foreground/70 max-w-xs">
-            Healthcare, delivered. Doctor-prescribed GLP-1 weight management for Pakistan.
+            Healthcare, delivered. Doctor-prescribed Tirzee weight management for Pakistan.
           </p>
         </div>
         <div className="md:col-span-8 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -976,13 +969,16 @@ function Footer() {
 /* ---------- MOBILE STICKY CTA ---------- */
 function MobileCta() {
   return (
-    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-cream/95 backdrop-blur border-t border-border">
-      <a
-        href="#consult"
-        className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream py-3.5 text-sm font-medium"
+    <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-cream/95 backdrop-blur border-t border-border flex gap-2">
+      <ConsultLink className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream py-3.5 text-sm font-medium">
+        Consult Now <ArrowRight size={16} />
+      </ConsultLink>
+      <Link
+        to="/product/tirzee"
+        className="inline-flex items-center justify-center gap-2 rounded-full border border-forest/30 bg-cream text-forest-deep px-4 py-3.5 text-sm font-medium"
       >
-        Start your consultation — 3 min <ArrowRight size={16} />
-      </a>
+        <ShoppingBag size={16} />
+      </Link>
     </div>
   );
 }
@@ -1008,7 +1004,7 @@ function Landing() {
       <Hero />
       <Pain />
       <Science />
-      <Products />
+      <ProductSection />
       <HowItWorks />
       <Results />
       <Doctors />
