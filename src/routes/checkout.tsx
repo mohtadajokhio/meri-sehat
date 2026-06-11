@@ -27,7 +27,6 @@ type FormState = {
 function CheckoutPage() {
   const items = useCart();
   const total = cartTotal(items);
-  const navigate = useNavigate();
   const fileRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState<FormState>({
