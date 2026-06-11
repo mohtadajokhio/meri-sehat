@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingBag } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import logo from "@/assets/logo.svg";
+import { useCart, cartCount, CONSULT_URL } from "@/lib/cart";
 
 const links = [
-  { href: "#how", label: "How it works" },
-  { href: "#products", label: "Our Medications" },
-  { href: "#results", label: "Results" },
-  { href: "#faq", label: "FAQs" },
+  { href: "/#how", label: "How it works" },
+  { href: "/#products", label: "Tirzee" },
+  { href: "/#results", label: "Results" },
+  { href: "/#faq", label: "FAQs" },
 ];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const items = useCart();
+  const count = cartCount(items);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -30,13 +34,13 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto max-w-7xl px-5 md:px-8 h-16 md:h-20 flex items-center justify-between">
-        <a href="#top" className="flex items-center group">
+        <Link to="/" className="flex items-center group">
           <img
             src={logo}
             alt="Meri Sehat"
             className="h-9 md:h-10 w-auto object-contain"
           />
-        </a>
+        </Link>
 
         <nav className="hidden md:flex items-center gap-8">
           {links.map((l) => (
@@ -51,8 +55,22 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Link
+            to="/cart"
+            aria-label="Cart"
+            className="relative p-2.5 rounded-full hover:bg-secondary transition-colors text-forest-deep"
+          >
+            <ShoppingBag size={20} />
+            {count > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-gold text-forest-deep text-[10px] font-semibold flex items-center justify-center">
+                {count}
+              </span>
+            )}
+          </Link>
           <a
-            href="#consult"
+            href={CONSULT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden md:inline-flex items-center justify-center rounded-full bg-forest text-cream px-5 py-2.5 text-sm font-medium hover:bg-forest-deep transition-colors shadow-soft"
           >
             Consult Now
@@ -87,7 +105,9 @@ export function Nav() {
                 </a>
               ))}
               <a
-                href="#consult"
+                href={CONSULT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
                 className="mt-2 inline-flex items-center justify-center rounded-full bg-forest text-cream px-5 py-3 text-sm font-medium"
               >
