@@ -34,7 +34,7 @@ import life2 from "@/assets/life-2.jpg";
 import life3 from "@/assets/life-3.jpg";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
 
 export const Route = createFileRoute("/")({
   head: () => ({

@@ -5,7 +5,7 @@ import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
 
 export const Route = createFileRoute("/product/tirzee")({
   head: () => ({
