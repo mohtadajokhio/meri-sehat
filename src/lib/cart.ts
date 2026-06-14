@@ -79,9 +79,19 @@ export function useCart() {
 
 export const CONSULT_URL = "https://consult.careconnect.pk/booking-confirmed";
 
+export const TIRZEE_VARIANTS = [
+  { id: "tirzee-2-5", dose: "2.5 mg", volume: "0.5 mL", price: 4000 },
+  { id: "tirzee-5", dose: "5 mg", volume: "0.5 mL", price: 6000 },
+  { id: "tirzee-7-5", dose: "7.5 mg", volume: "0.5 mL", price: 7500 },
+  { id: "tirzee-10", dose: "10 mg", volume: "0.5 mL", price: 10000 },
+];
+
+export const TIRZEE_NAME = "Tirzee";
+
+// Default/starting variant used by landing card
 export const TIRZEE_PRODUCT = {
-  id: "tirzee",
-  name: "Tirzee",
-  variant: "Tirzepatide · 2.5mg pen",
-  price: 24500,
+  id: TIRZEE_VARIANTS[0].id,
+  name: TIRZEE_NAME,
+  variant: `Tirzepatide · ${TIRZEE_VARIANTS[0].dose} / ${TIRZEE_VARIANTS[0].volume}`,
+  price: TIRZEE_VARIANTS[0].price,
 };
