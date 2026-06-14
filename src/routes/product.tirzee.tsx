@@ -5,7 +5,7 @@ import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
 
 export const Route = createFileRoute("/product/tirzee")({
   head: () => ({
@@ -23,21 +23,24 @@ export const Route = createFileRoute("/product/tirzee")({
 
 function ProductPage() {
   const [qty, setQty] = useState(1);
-  const [added, setAdded] = useState(false);
+  const items = useCart();
+  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
 
-  const handleAdd = () => {
-    addToCart(
-      {
-        id: TIRZEE_PRODUCT.id,
-        name: TIRZEE_PRODUCT.name,
-        variant: TIRZEE_PRODUCT.variant,
-        price: TIRZEE_PRODUCT.price,
-        image: prodTirzee,
-      },
-      qty,
-    );
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
+  const handleToggle = () => {
+    if (inCart) {
+      removeItem(TIRZEE_PRODUCT.id);
+    } else {
+      addToCart(
+        {
+          id: TIRZEE_PRODUCT.id,
+          name: TIRZEE_PRODUCT.name,
+          variant: TIRZEE_PRODUCT.variant,
+          price: TIRZEE_PRODUCT.price,
+          image: prodTirzee,
+        },
+        qty,
+      );
+    }
   };
 
   const bullets = [
@@ -128,11 +131,11 @@ function ProductPage() {
                     </button>
                   </div>
                   <button
-                    onClick={handleAdd}
-                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-4 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
+                    onClick={handleToggle}
+                    className={`flex-1 inline-flex items-center justify-center gap-2 rounded-full px-7 py-4 text-sm font-medium transition-all shadow-soft hover:-translate-y-0.5 ${inCart ? "bg-gold text-forest-deep hover:bg-gold/90" : "bg-forest text-cream hover:bg-forest-deep"}`}
                   >
                     <ShoppingBag size={16} />
-                    {added ? "Added to cart" : "Add to cart"}
+                    {inCart ? "Added to cart" : "Add to cart"}
                   </button>
                 </div>
 

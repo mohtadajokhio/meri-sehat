@@ -34,7 +34,7 @@ import life2 from "@/assets/life-2.jpg";
 import life3 from "@/assets/life-3.jpg";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -353,17 +353,21 @@ function Science() {
 
 /* ---------- PRODUCT (TIRZEE) ---------- */
 function ProductSection() {
-  const [added, setAdded] = useState(false);
-  const handleAdd = () => {
-    addToCart({
-      id: TIRZEE_PRODUCT.id,
-      name: TIRZEE_PRODUCT.name,
-      variant: TIRZEE_PRODUCT.variant,
-      price: TIRZEE_PRODUCT.price,
-      image: prodTirzee,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
+  const items = useCart();
+  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
+
+  const handleToggle = () => {
+    if (inCart) {
+      removeItem(TIRZEE_PRODUCT.id);
+    } else {
+      addToCart({
+        id: TIRZEE_PRODUCT.id,
+        name: TIRZEE_PRODUCT.name,
+        variant: TIRZEE_PRODUCT.variant,
+        price: TIRZEE_PRODUCT.price,
+        image: prodTirzee,
+      });
+    }
   };
 
   const bullets = [
@@ -446,11 +450,11 @@ function ProductSection() {
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={handleAdd}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
+                  onClick={handleToggle}
+                  className={`group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium transition-all shadow-soft hover:-translate-y-0.5 ${inCart ? "bg-gold text-forest-deep hover:bg-gold/90" : "bg-forest text-cream hover:bg-forest-deep"}`}
                 >
                   <ShoppingBag size={16} />
-                  {added ? "Added to cart" : "Add to cart"}
+                  {inCart ? "Added to cart" : "Add to cart"}
                 </button>
                 <Link
                   to="/product/tirzee"
