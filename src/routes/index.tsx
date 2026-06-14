@@ -34,7 +34,7 @@ import life2 from "@/assets/life-2.jpg";
 import life3 from "@/assets/life-3.jpg";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { CONSULT_URL, TIRZEE_VARIANTS } from "@/lib/cart";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -353,22 +353,7 @@ function Science() {
 
 /* ---------- PRODUCT (TIRZEE) ---------- */
 function ProductSection() {
-  const items = useCart();
-  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
-
-  const handleToggle = () => {
-    if (inCart) {
-      removeItem(TIRZEE_PRODUCT.id);
-    } else {
-      addToCart({
-        id: TIRZEE_PRODUCT.id,
-        name: TIRZEE_PRODUCT.name,
-        variant: TIRZEE_PRODUCT.variant,
-        price: TIRZEE_PRODUCT.price,
-        image: prodTirzee,
-      });
-    }
-  };
+  const fromPrice = Math.min(...TIRZEE_VARIANTS.map((v) => v.price));
 
   const bullets = [
     "Once-weekly injection",
@@ -442,20 +427,32 @@ function ProductSection() {
               </ul>
 
               <div className="mt-7 flex items-baseline gap-3">
+                <span className="text-sm text-muted-foreground">from</span>
                 <span className="font-serif text-3xl text-forest-deep">
-                  PKR {TIRZEE_PRODUCT.price.toLocaleString()}
+                  PKR {fromPrice.toLocaleString()}
                 </span>
                 <span className="text-sm text-muted-foreground">per pen</span>
               </div>
 
+              <div className="mt-3 flex flex-wrap gap-2">
+                {TIRZEE_VARIANTS.map((v) => (
+                  <span
+                    key={v.id}
+                    className="inline-flex items-center gap-1 rounded-full border border-border bg-background px-3 py-1 text-xs text-forest-deep"
+                  >
+                    {v.dose} <span className="text-muted-foreground">· {v.volume}</span>
+                  </span>
+                ))}
+              </div>
+
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={handleToggle}
-                  className={`group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium transition-all shadow-soft hover:-translate-y-0.5 ${inCart ? "bg-gold text-forest-deep hover:bg-gold/90" : "bg-forest text-cream hover:bg-forest-deep"}`}
+                <Link
+                  to="/product/tirzee"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
                 >
                   <ShoppingBag size={16} />
-                  {inCart ? "Added to cart" : "Add to cart"}
-                </button>
+                  Choose your dose
+                </Link>
                 <Link
                   to="/product/tirzee"
                   className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium text-forest-deep hover:border-forest/40 transition-colors"
@@ -463,6 +460,7 @@ function ProductSection() {
                   View product
                 </Link>
               </div>
+
 
               <div className="mt-5 p-4 rounded-2xl bg-gold/10 border border-gold/30 text-sm text-forest-deep">
                 Don't have a prescription?{" "}
