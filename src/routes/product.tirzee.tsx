@@ -5,7 +5,7 @@ import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_VARIANTS, TIRZEE_NAME } from "@/lib/cart";
 
 export const Route = createFileRoute("/product/tirzee")({
   head: () => ({
@@ -23,19 +23,21 @@ export const Route = createFileRoute("/product/tirzee")({
 
 function ProductPage() {
   const [qty, setQty] = useState(1);
+  const [variantId, setVariantId] = useState(TIRZEE_VARIANTS[0].id);
   const items = useCart();
-  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
+  const variant = TIRZEE_VARIANTS.find((v) => v.id === variantId) ?? TIRZEE_VARIANTS[0];
+  const inCart = items.some((i) => i.id === variant.id);
 
   const handleToggle = () => {
     if (inCart) {
-      removeItem(TIRZEE_PRODUCT.id);
+      removeItem(variant.id);
     } else {
       addToCart(
         {
-          id: TIRZEE_PRODUCT.id,
-          name: TIRZEE_PRODUCT.name,
-          variant: TIRZEE_PRODUCT.variant,
-          price: TIRZEE_PRODUCT.price,
+          id: variant.id,
+          name: TIRZEE_NAME,
+          variant: `Tirzepatide · ${variant.dose} / ${variant.volume}`,
+          price: variant.price,
           image: prodTirzee,
         },
         qty,
@@ -89,13 +91,37 @@ function ProductPage() {
                 <h1 className="mt-3 font-serif text-5xl md:text-6xl text-forest-deep leading-[1.02]">
                   Tirzee
                 </h1>
-                <p className="mt-2 text-muted-foreground">{TIRZEE_PRODUCT.variant}</p>
+                <p className="mt-2 text-muted-foreground">Tirzepatide · pre-filled pen</p>
 
                 <div className="mt-6 flex items-baseline gap-3">
                   <span className="font-serif text-4xl text-forest-deep">
-                    PKR {TIRZEE_PRODUCT.price.toLocaleString()}
+                    PKR {variant.price.toLocaleString()}
                   </span>
-                  <span className="text-sm text-muted-foreground">per pen</span>
+                  <span className="text-sm text-muted-foreground">per pen · {variant.dose} / {variant.volume}</span>
+                </div>
+
+                <div className="mt-7">
+                  <p className="text-xs uppercase tracking-[0.18em] text-forest/70 mb-3">
+                    Select dose
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                    {TIRZEE_VARIANTS.map((v) => {
+                      const selected = v.id === variantId;
+                      return (
+                        <button
+                          key={v.id}
+                          type="button"
+                          onClick={() => setVariantId(v.id)}
+                          className={`rounded-xl border px-3 py-3 text-left transition-all ${selected ? "border-forest bg-forest text-cream shadow-soft" : "border-border bg-card text-forest-deep hover:border-forest/40"}`}
+                        >
+                          <div className="text-sm font-medium">{v.dose}</div>
+                          <div className={`text-[11px] ${selected ? "text-cream/75" : "text-muted-foreground"}`}>
+                            {v.volume} · PKR {v.price.toLocaleString()}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
 
                 <p className="mt-6 text-foreground/75 text-[15px] leading-relaxed max-w-xl">
