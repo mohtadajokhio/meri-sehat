@@ -34,7 +34,7 @@ import life2 from "@/assets/life-2.jpg";
 import life3 from "@/assets/life-3.jpg";
 import prodTirzee from "@/assets/prod-tirzee.png";
 import bgTirzee from "@/assets/bg-tirzee.png";
-import { addToCart, removeItem, useCart, CONSULT_URL, TIRZEE_PRODUCT } from "@/lib/cart";
+import { CONSULT_URL, TIRZEE_VARIANTS } from "@/lib/cart";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -353,22 +353,7 @@ function Science() {
 
 /* ---------- PRODUCT (TIRZEE) ---------- */
 function ProductSection() {
-  const items = useCart();
-  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
-
-  const handleToggle = () => {
-    if (inCart) {
-      removeItem(TIRZEE_PRODUCT.id);
-    } else {
-      addToCart({
-        id: TIRZEE_PRODUCT.id,
-        name: TIRZEE_PRODUCT.name,
-        variant: TIRZEE_PRODUCT.variant,
-        price: TIRZEE_PRODUCT.price,
-        image: prodTirzee,
-      });
-    }
-  };
+  const fromPrice = Math.min(...TIRZEE_VARIANTS.map((v) => v.price));
 
   const bullets = [
     "Once-weekly injection",
