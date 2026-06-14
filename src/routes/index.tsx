@@ -450,11 +450,11 @@ function ProductSection() {
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
                 <button
-                  onClick={handleAdd}
-                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
+                  onClick={handleToggle}
+                  className={`group inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium transition-all shadow-soft hover:-translate-y-0.5 ${inCart ? "bg-gold text-forest-deep hover:bg-gold/90" : "bg-forest text-cream hover:bg-forest-deep"}`}
                 >
                   <ShoppingBag size={16} />
-                  {added ? "Added to cart" : "Add to cart"}
+                  {inCart ? "Added to cart" : "Add to cart"}
                 </button>
                 <Link
                   to="/product/tirzee"
