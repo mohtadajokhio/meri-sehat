@@ -23,21 +23,24 @@ export const Route = createFileRoute("/product/tirzee")({
 
 function ProductPage() {
   const [qty, setQty] = useState(1);
-  const [added, setAdded] = useState(false);
+  const items = useCart();
+  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
 
-  const handleAdd = () => {
-    addToCart(
-      {
-        id: TIRZEE_PRODUCT.id,
-        name: TIRZEE_PRODUCT.name,
-        variant: TIRZEE_PRODUCT.variant,
-        price: TIRZEE_PRODUCT.price,
-        image: prodTirzee,
-      },
-      qty,
-    );
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
+  const handleToggle = () => {
+    if (inCart) {
+      removeItem(TIRZEE_PRODUCT.id);
+    } else {
+      addToCart(
+        {
+          id: TIRZEE_PRODUCT.id,
+          name: TIRZEE_PRODUCT.name,
+          variant: TIRZEE_PRODUCT.variant,
+          price: TIRZEE_PRODUCT.price,
+          image: prodTirzee,
+        },
+        qty,
+      );
+    }
   };
 
   const bullets = [

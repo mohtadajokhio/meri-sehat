@@ -353,17 +353,21 @@ function Science() {
 
 /* ---------- PRODUCT (TIRZEE) ---------- */
 function ProductSection() {
-  const [added, setAdded] = useState(false);
-  const handleAdd = () => {
-    addToCart({
-      id: TIRZEE_PRODUCT.id,
-      name: TIRZEE_PRODUCT.name,
-      variant: TIRZEE_PRODUCT.variant,
-      price: TIRZEE_PRODUCT.price,
-      image: prodTirzee,
-    });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
+  const items = useCart();
+  const inCart = items.some((i) => i.id === TIRZEE_PRODUCT.id);
+
+  const handleToggle = () => {
+    if (inCart) {
+      removeItem(TIRZEE_PRODUCT.id);
+    } else {
+      addToCart({
+        id: TIRZEE_PRODUCT.id,
+        name: TIRZEE_PRODUCT.name,
+        variant: TIRZEE_PRODUCT.variant,
+        price: TIRZEE_PRODUCT.price,
+        image: prodTirzee,
+      });
+    }
   };
 
   const bullets = [
