@@ -906,13 +906,14 @@ function FinalCta() {
               Consult Now — It's Free
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </ConsultLink>
-            <Link
-              to="/product/tirzee"
+            <button
+              type="button"
+              onClick={() => openOrder()}
               className="inline-flex items-center gap-3 rounded-full border border-cream/30 text-cream px-9 py-5 text-base font-medium hover:bg-cream/10 transition-all"
             >
               Order Tirzee
               <ShoppingBag size={18} />
-            </Link>
+            </button>
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-cream/70">
             <span className="inline-flex items-center gap-1.5"><Lock size={12} /> 100% private</span>
