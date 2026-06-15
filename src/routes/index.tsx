@@ -984,12 +984,14 @@ function MobileCta() {
       <ConsultLink className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream py-3.5 text-sm font-medium">
         Consult Now <ArrowRight size={16} />
       </ConsultLink>
-      <Link
-        to="/product/tirzee"
+      <button
+        type="button"
+        onClick={() => openOrder()}
+        aria-label="Place order"
         className="inline-flex items-center justify-center gap-2 rounded-full border border-forest/30 bg-cream text-forest-deep px-4 py-3.5 text-sm font-medium"
       >
         <ShoppingBag size={16} />
-      </Link>
+      </button>
     </div>
   );
 }
