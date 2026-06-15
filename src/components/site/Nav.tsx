@@ -15,8 +15,7 @@ const links = [
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const items = useCart();
-  const count = cartCount(items);
+
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
