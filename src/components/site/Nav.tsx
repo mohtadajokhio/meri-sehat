@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, ShoppingBag } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import logo from "@/assets/logo.svg";
-import { useCart, cartCount, CONSULT_URL } from "@/lib/cart";
+import { CONSULT_URL } from "@/lib/cart";
 
 const links = [
   { href: "/#how", label: "How it works" },
