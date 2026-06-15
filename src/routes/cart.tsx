@@ -124,7 +124,7 @@ function CartPage() {
                     </div>
                     <div className="flex items-center justify-between">
                       <span className="text-foreground/70">Delivery</span>
-                      <span className="font-medium text-forest-deep">Calculated at checkout</span>
+                      <span className="font-medium text-forest-deep">Free</span>
                     </div>
                     <div className="border-t border-border pt-3 flex items-center justify-between">
                       <span className="text-foreground/80">Total</span>
