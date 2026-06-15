@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useState } from "react";
 import {
@@ -24,6 +24,17 @@ import {
 } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import heroWoman from "@/assets/hero-woman.jpg";
 import logo from "@/assets/logo.svg";
 import painWoman from "@/assets/pain-woman.jpg";
