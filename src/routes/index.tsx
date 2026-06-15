@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   Check,
@@ -24,6 +24,17 @@ import {
 } from "lucide-react";
 import { Nav } from "@/components/site/Nav";
 import { Reveal } from "@/components/site/Reveal";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { toast } from "sonner";
 import heroWoman from "@/assets/hero-woman.jpg";
 import logo from "@/assets/logo.svg";
 import painWoman from "@/assets/pain-woman.jpg";
@@ -446,20 +457,17 @@ function ProductSection() {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Link
-                  to="/product/tirzee"
+                <button
+                  type="button"
+                  onClick={() => openOrder()}
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
                 >
                   <ShoppingBag size={16} />
-                  Choose your dose
-                </Link>
-                <Link
-                  to="/product/tirzee"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium text-forest-deep hover:border-forest/40 transition-colors"
-                >
-                  View product
-                </Link>
+                  Place Order
+                </button>
               </div>
+
+
 
 
               <div className="mt-5 p-4 rounded-2xl bg-gold/10 border border-gold/30 text-sm text-forest-deep">
@@ -898,13 +906,14 @@ function FinalCta() {
               Consult Now — It's Free
               <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
             </ConsultLink>
-            <Link
-              to="/product/tirzee"
+            <button
+              type="button"
+              onClick={() => openOrder()}
               className="inline-flex items-center gap-3 rounded-full border border-cream/30 text-cream px-9 py-5 text-base font-medium hover:bg-cream/10 transition-all"
             >
               Order Tirzee
               <ShoppingBag size={18} />
-            </Link>
+            </button>
           </div>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-cream/70">
             <span className="inline-flex items-center gap-1.5"><Lock size={12} /> 100% private</span>
@@ -975,12 +984,14 @@ function MobileCta() {
       <ConsultLink className="flex-1 inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream py-3.5 text-sm font-medium">
         Consult Now <ArrowRight size={16} />
       </ConsultLink>
-      <Link
-        to="/product/tirzee"
+      <button
+        type="button"
+        onClick={() => openOrder()}
+        aria-label="Place order"
         className="inline-flex items-center justify-center gap-2 rounded-full border border-forest/30 bg-cream text-forest-deep px-4 py-3.5 text-sm font-medium"
       >
         <ShoppingBag size={16} />
-      </Link>
+      </button>
     </div>
   );
 }
@@ -996,6 +1007,161 @@ function WhatsappFab() {
       <MessageCircle size={18} />
       <span className="text-sm font-medium">Chat on WhatsApp</span>
     </a>
+  );
+}
+
+/* ---------- ORDER DIALOG ---------- */
+function openOrder(variantId?: string) {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("open-order", { detail: { variantId } }),
+    );
+  }
+}
+
+function OrderDialog() {
+  const [open, setOpen] = useState(false);
+  const [variantId, setVariantId] = useState(TIRZEE_VARIANTS[0].id);
+  const [form, setForm] = useState({
+    name: "",
+    number: "",
+    email: "",
+    address: "",
+    city: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const variant =
+    TIRZEE_VARIANTS.find((v) => v.id === variantId) ?? TIRZEE_VARIANTS[0];
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ variantId?: string }>).detail;
+      if (detail?.variantId) setVariantId(detail.variantId);
+      setOpen(true);
+    };
+    window.addEventListener("open-order", handler);
+    return () => window.removeEventListener("open-order", handler);
+  }, []);
+
+  const onChange = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      setOpen(false);
+      setForm({ name: "", number: "", email: "", address: "", city: "" });
+      toast.success("Order placed! Our team will call you shortly to confirm.");
+    }, 400);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="font-serif text-2xl text-forest-deep">
+            Place your Tirzee order
+          </DialogTitle>
+          <DialogDescription>
+            Free home delivery across Pakistan. Pay on delivery.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+              Choose your dose
+            </Label>
+            <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {TIRZEE_VARIANTS.map((v) => {
+                const active = v.id === variantId;
+                return (
+                  <button
+                    key={v.id}
+                    type="button"
+                    onClick={() => setVariantId(v.id)}
+                    className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                      active
+                        ? "border-forest bg-forest text-cream"
+                        : "border-border bg-card text-forest-deep hover:border-forest/40"
+                    }`}
+                  >
+                    <div className="font-medium">{v.dose}</div>
+                    <div
+                      className={`text-[11px] ${active ? "text-cream/80" : "text-muted-foreground"}`}
+                    >
+                      PKR {v.price.toLocaleString()}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="o-name">Full name</Label>
+              <Input id="o-name" required value={form.name} onChange={onChange("name")} />
+            </div>
+            <div>
+              <Label htmlFor="o-number">Phone number</Label>
+              <Input
+                id="o-number"
+                type="tel"
+                required
+                value={form.number}
+                onChange={onChange("number")}
+              />
+            </div>
+          </div>
+          <div>
+            <Label htmlFor="o-email">Email</Label>
+            <Input
+              id="o-email"
+              type="email"
+              required
+              value={form.email}
+              onChange={onChange("email")}
+            />
+          </div>
+          <div>
+            <Label htmlFor="o-address">Address</Label>
+            <Input
+              id="o-address"
+              required
+              value={form.address}
+              onChange={onChange("address")}
+            />
+          </div>
+          <div>
+            <Label htmlFor="o-city">City</Label>
+            <Input id="o-city" required value={form.city} onChange={onChange("city")} />
+          </div>
+
+          <div className="flex items-center justify-between rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm">
+            <span className="text-foreground/70">
+              {variant.dose} · {variant.volume}
+            </span>
+            <span className="font-serif text-lg text-forest-deep">
+              PKR {variant.price.toLocaleString()}
+            </span>
+          </div>
+
+          <DialogFooter>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all disabled:opacity-60"
+            >
+              {submitting ? "Placing order…" : "Place Order"}
+            </button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
 
@@ -1016,6 +1182,7 @@ function Landing() {
       <Footer />
       <MobileCta />
       <WhatsappFab />
+      <OrderDialog />
     </main>
   );
 }
