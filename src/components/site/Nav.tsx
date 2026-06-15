@@ -54,18 +54,6 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Link
-            to="/cart"
-            aria-label="Cart"
-            className="relative p-2.5 rounded-full hover:bg-secondary transition-colors text-forest-deep"
-          >
-            <ShoppingBag size={20} />
-            {count > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-gold text-forest-deep text-[10px] font-semibold flex items-center justify-center">
-                {count}
-              </span>
-            )}
-          </Link>
           <a
             href={CONSULT_URL}
             target="_blank"
