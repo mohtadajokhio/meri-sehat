@@ -457,20 +457,17 @@ function ProductSection() {
               </div>
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3">
-                <Link
-                  to="/product/tirzee"
+                <button
+                  type="button"
+                  onClick={() => openOrder()}
                   className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all shadow-soft hover:-translate-y-0.5"
                 >
                   <ShoppingBag size={16} />
-                  Choose your dose
-                </Link>
-                <Link
-                  to="/product/tirzee"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-card px-6 py-3.5 text-sm font-medium text-forest-deep hover:border-forest/40 transition-colors"
-                >
-                  View product
-                </Link>
+                  Place Order
+                </button>
               </div>
+
+
 
 
               <div className="mt-5 p-4 rounded-2xl bg-gold/10 border border-gold/30 text-sm text-forest-deep">
