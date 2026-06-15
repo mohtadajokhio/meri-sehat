@@ -1010,6 +1010,161 @@ function WhatsappFab() {
   );
 }
 
+/* ---------- ORDER DIALOG ---------- */
+function openOrder(variantId?: string) {
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(
+      new CustomEvent("open-order", { detail: { variantId } }),
+    );
+  }
+}
+
+function OrderDialog() {
+  const [open, setOpen] = useState(false);
+  const [variantId, setVariantId] = useState(TIRZEE_VARIANTS[0].id);
+  const [form, setForm] = useState({
+    name: "",
+    number: "",
+    email: "",
+    address: "",
+    city: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  const variant =
+    TIRZEE_VARIANTS.find((v) => v.id === variantId) ?? TIRZEE_VARIANTS[0];
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<{ variantId?: string }>).detail;
+      if (detail?.variantId) setVariantId(detail.variantId);
+      setOpen(true);
+    };
+    window.addEventListener("open-order", handler);
+    return () => window.removeEventListener("open-order", handler);
+  }, []);
+
+  const onChange = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setTimeout(() => {
+      setSubmitting(false);
+      setOpen(false);
+      setForm({ name: "", number: "", email: "", address: "", city: "" });
+      toast.success("Order placed! Our team will call you shortly to confirm.");
+    }, 400);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent className="max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="font-serif text-2xl text-forest-deep">
+            Place your Tirzee order
+          </DialogTitle>
+          <DialogDescription>
+            Free home delivery across Pakistan. Pay on delivery.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={onSubmit} className="space-y-4">
+          <div>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+              Choose your dose
+            </Label>
+            <div className="mt-2 grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {TIRZEE_VARIANTS.map((v) => {
+                const active = v.id === variantId;
+                return (
+                  <button
+                    key={v.id}
+                    type="button"
+                    onClick={() => setVariantId(v.id)}
+                    className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                      active
+                        ? "border-forest bg-forest text-cream"
+                        : "border-border bg-card text-forest-deep hover:border-forest/40"
+                    }`}
+                  >
+                    <div className="font-medium">{v.dose}</div>
+                    <div
+                      className={`text-[11px] ${active ? "text-cream/80" : "text-muted-foreground"}`}
+                    >
+                      PKR {v.price.toLocaleString()}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-3">
+            <div>
+              <Label htmlFor="o-name">Full name</Label>
+              <Input id="o-name" required value={form.name} onChange={onChange("name")} />
+            </div>
+            <div>
+              <Label htmlFor="o-number">Phone number</Label>
+              <Input
+                id="o-number"
+                type="tel"
+                required
+                value={form.number}
+                onChange={onChange("number")}
+              />
+            </div>
+          </div>
+          <div>
+            <Label htmlFor="o-email">Email</Label>
+            <Input
+              id="o-email"
+              type="email"
+              required
+              value={form.email}
+              onChange={onChange("email")}
+            />
+          </div>
+          <div>
+            <Label htmlFor="o-address">Address</Label>
+            <Input
+              id="o-address"
+              required
+              value={form.address}
+              onChange={onChange("address")}
+            />
+          </div>
+          <div>
+            <Label htmlFor="o-city">City</Label>
+            <Input id="o-city" required value={form.city} onChange={onChange("city")} />
+          </div>
+
+          <div className="flex items-center justify-between rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm">
+            <span className="text-foreground/70">
+              {variant.dose} · {variant.volume}
+            </span>
+            <span className="font-serif text-lg text-forest-deep">
+              PKR {variant.price.toLocaleString()}
+            </span>
+          </div>
+
+          <DialogFooter>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-forest text-cream px-7 py-3.5 text-sm font-medium hover:bg-forest-deep transition-all disabled:opacity-60"
+            >
+              {submitting ? "Placing order…" : "Place Order"}
+            </button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function Landing() {
   return (
     <main className="bg-background text-foreground antialiased">
@@ -1027,6 +1182,7 @@ function Landing() {
       <Footer />
       <MobileCta />
       <WhatsappFab />
+      <OrderDialog />
     </main>
   );
 }
