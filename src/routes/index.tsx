@@ -397,14 +397,14 @@ function ProductSection() {
           <Reveal>
             <article className="group relative h-full rounded-3xl bg-card border border-border overflow-hidden hover:border-forest/40 transition-all duration-500 hover:shadow-card">
               <div
-                className="relative aspect-[5/4] overflow-hidden bg-cover bg-center"
+                className="relative aspect-[4/5] overflow-hidden bg-cover bg-center"
                 style={{ backgroundImage: `url(${bgTirzee})` }}
               >
                 <img
                   src={prodTirzee}
                   alt="Tirzee tirzepatide pen"
                   loading="lazy"
-                  className="absolute bottom-0 right-0 w-[78%] h-[88%] object-contain object-bottom-right transition-transform duration-700 group-hover:scale-105 origin-bottom-right"
+                  className="absolute inset-0 m-auto w-[75%] h-[75%] object-contain transition-transform duration-700 group-hover:scale-105"
                 />
                 <span className="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-forest text-cream text-[10px] font-medium tracking-wider">
                   Rx
