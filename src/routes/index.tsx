@@ -404,7 +404,7 @@ function ProductSection() {
                   src={prodTirzee}
                   alt="Tirzee tirzepatide pen"
                   loading="lazy"
-                  className="absolute inset-0 m-auto w-[75%] h-[75%] object-contain transition-transform duration-700 group-hover:scale-105"
+                  className="absolute bottom-0 right-0 max-w-[90%] max-h-[90%] w-auto h-auto object-contain transition-transform duration-700 origin-bottom-right group-hover:scale-105"
                 />
                 <span className="absolute top-4 right-4 inline-flex items-center justify-center w-9 h-9 rounded-full bg-forest text-cream text-[10px] font-medium tracking-wider">
                   Rx
