@@ -1179,10 +1179,10 @@ function OrderDialog() {
 
           <div className="flex items-center justify-between rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm">
             <span className="text-foreground/70">
-              {variant.dose} · {variant.volume}
+              {variant.dose} · {variant.volume} · {quantity} pen{quantity > 1 ? "s" : ""}
             </span>
             <span className="font-serif text-lg text-forest-deep">
-              PKR {variant.price.toLocaleString()}
+              PKR {totalPrice.toLocaleString()}
             </span>
           </div>
 
