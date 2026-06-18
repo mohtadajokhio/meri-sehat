@@ -1055,9 +1055,12 @@ function OrderDialog() {
       setSubmitting(false);
       setOpen(false);
       setForm({ name: "", number: "", email: "", address: "", city: "" });
+      setQuantity(1);
       toast.success("Order placed! Our team will call you shortly to confirm.");
     }, 400);
   };
+
+  const totalPrice = variant.price * quantity;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
