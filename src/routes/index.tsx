@@ -1022,6 +1022,7 @@ function openOrder(variantId?: string) {
 function OrderDialog() {
   const [open, setOpen] = useState(false);
   const [variantId, setVariantId] = useState(TIRZEE_VARIANTS[0].id);
+  const [quantity, setQuantity] = useState(1);
   const [form, setForm] = useState({
     name: "",
     number: "",
