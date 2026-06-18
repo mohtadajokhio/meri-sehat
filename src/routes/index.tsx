@@ -1105,6 +1105,38 @@ function OrderDialog() {
             </div>
           </div>
 
+          <div>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+              Choose your supply
+            </Label>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              {[1, 4].map((q) => {
+                const active = quantity === q;
+                return (
+                  <button
+                    key={q}
+                    type="button"
+                    onClick={() => setQuantity(q)}
+                    className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                      active
+                        ? "border-forest bg-forest text-cream"
+                        : "border-border bg-card text-forest-deep hover:border-forest/40"
+                    }`}
+                  >
+                    <div className="font-medium">
+                      {q === 1 ? "Single Dose" : "Monthly Dose"}
+                    </div>
+                    <div
+                      className={`text-[11px] ${active ? "text-cream/80" : "text-muted-foreground"}`}
+                    >
+                      {q} pen{q > 1 ? "s" : ""}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="grid sm:grid-cols-2 gap-3">
             <div>
               <Label htmlFor="o-name">Full name</Label>
