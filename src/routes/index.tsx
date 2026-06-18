@@ -1022,6 +1022,7 @@ function openOrder(variantId?: string) {
 function OrderDialog() {
   const [open, setOpen] = useState(false);
   const [variantId, setVariantId] = useState(TIRZEE_VARIANTS[0].id);
+  const [quantity, setQuantity] = useState(1);
   const [form, setForm] = useState({
     name: "",
     number: "",
@@ -1054,9 +1055,12 @@ function OrderDialog() {
       setSubmitting(false);
       setOpen(false);
       setForm({ name: "", number: "", email: "", address: "", city: "" });
+      setQuantity(1);
       toast.success("Order placed! Our team will call you shortly to confirm.");
     }, 400);
   };
+
+  const totalPrice = variant.price * quantity;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -1094,6 +1098,38 @@ function OrderDialog() {
                       className={`text-[11px] ${active ? "text-cream/80" : "text-muted-foreground"}`}
                     >
                       PKR {v.price.toLocaleString()}
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <Label className="text-xs uppercase tracking-wider text-muted-foreground">
+              Choose your supply
+            </Label>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              {[1, 4].map((q) => {
+                const active = quantity === q;
+                return (
+                  <button
+                    key={q}
+                    type="button"
+                    onClick={() => setQuantity(q)}
+                    className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                      active
+                        ? "border-forest bg-forest text-cream"
+                        : "border-border bg-card text-forest-deep hover:border-forest/40"
+                    }`}
+                  >
+                    <div className="font-medium">
+                      {q === 1 ? "Single Dose" : "Monthly Dose"}
+                    </div>
+                    <div
+                      className={`text-[11px] ${active ? "text-cream/80" : "text-muted-foreground"}`}
+                    >
+                      {q} pen{q > 1 ? "s" : ""}
                     </div>
                   </button>
                 );
@@ -1143,10 +1179,10 @@ function OrderDialog() {
 
           <div className="flex items-center justify-between rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm">
             <span className="text-foreground/70">
-              {variant.dose} · {variant.volume}
+              {variant.dose} · {variant.volume} · {quantity} pen{quantity > 1 ? "s" : ""}
             </span>
             <span className="font-serif text-lg text-forest-deep">
-              PKR {variant.price.toLocaleString()}
+              PKR {totalPrice.toLocaleString()}
             </span>
           </div>
 
